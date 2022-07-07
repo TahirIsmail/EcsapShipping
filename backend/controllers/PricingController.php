@@ -1,0 +1,165 @@
+<?php
+
+namespace backend\controllers;
+
+use Yii;
+$session = Yii::$app->session;
+$session->open();
+
+if(!isset($_SESSION)) { 
+     echo Yii::$app->urlManager->baseUrl;
+     }
+use common\models\Pricing;
+use common\models\PricingSearch;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+
+/**
+ * PricingController implements the CRUD actions for Pricing model.
+ */
+class PricingController extends Controller
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'delete' => ['POST'],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Lists all Pricing models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel = new PricingSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single Pricing model.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    /**
+     * Creates a new Pricing model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Pricing();
+
+        if ($model->load(Yii::$app->request->post())) {
+            $file = UploadedFile::getInstance($model, 'upload_file');
+            if ($file !== null) {
+              $model->upload_file= $file->name;
+              $array = explode(".", $file->name);
+              $ext=end($array);
+              $model->upload_file = Yii::$app->security->generateRandomString() . ".{$ext}";
+              $path =  Yii::getAlias('@app').'/../uploads/'.$model->upload_file;
+              $file->saveAs($path);
+          }
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Updates an existing Pricing model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $old_file=$model->upload_file;
+        if ($model->load(Yii::$app->request->post())) {
+            $file = UploadedFile::getInstance($model, 'upload_file');
+            if ($file) {
+               
+                if($model->upload_file)
+                {
+                 unlink(Yii::getAlias('@app') . '/../uploads/' . $model->upload_file);
+              
+                }
+                $model->upload_file= $file->name;
+                $array = explode(".", $file->name);
+                $ext=end($array);
+                $model->upload_file = Yii::$app->security->generateRandomString() . ".{$ext}";
+                $path =  Yii::getAlias('@app').'/../uploads/'.$model->upload_file;
+                $file->saveAs($path);
+         
+         }
+        else{
+           $model->upload_file= $old_file;
+          
+        }
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Pricing model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Pricing model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Pricing the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Pricing::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+}

@@ -1,0 +1,30 @@
+@media print {
+    th{
+      font-size:10px !important;
+      padding:4px !important;
+    }
+    td{
+        padding:4px !important;
+        font-size: 12px;
+    }
+    html {
+        page-break-inside: avoid;
+        transform: scale(.9,.8) !important;
+        margin-top: -12% !important;
+    }
+    .invoice-col{
+        word-break: break-all;
+        transform: scale(.8);
+        font-size: 13px;
+    }
+    .invoice-col:first-child{
+        
+    }
+    .invoice-col:last-child{
+        
+    }
+
+   .no-print{
+        display:none !important;
+    }
+}

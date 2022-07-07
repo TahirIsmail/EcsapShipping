@@ -1,0 +1,1 @@
+ALTER TABLE `subj_classes` ADD `cl_duration_id` INT NOT NULL AFTER `subj_classes_subj_id`;

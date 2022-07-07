@@ -1,0 +1,57 @@
+@media print {
+    th{
+      font-size:10px !important;
+      padding:4px !important;
+    }
+    td{
+        padding:4px !important;
+        font-size: 12px;
+    }
+    html {
+        page-break-inside: avoid;
+        transform: scale(.9,.8) !important;
+        margin-top: -11% !important;
+    }
+    .homeland-logo{
+        transform: scale(1.1,1.2) !important;
+    }
+    .invoice-col{
+        word-break: break-all;
+        transform: scale(.8);
+        font-size: 13px;
+    }
+    .invoice-col:first-child{
+        
+    }
+    .grid-view .filters .form-control{
+
+    }
+    .invoice-col:last-child{
+        
+    }
+    .editable-text,textarea{
+        border:none;
+        width:100%;padding-top:5px;
+        resize: none !important;
+
+    }
+
+    .exports{
+    }
+    .condition_reports td{
+        font-size: 15px !important;
+    }
+    .condition_reports th{
+        font-size: 15px !important;
+    }
+    .menifest_modal_print td,.menifest_modal_print th{
+        font-size: 13px !important;
+    }
+    @page {
+        margin: 0;  /* this affects the margin in the printer settings */
+        size: A4;
+    }
+   .no-print{
+        display:none !important;
+    }
+}

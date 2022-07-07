@@ -1,0 +1,45 @@
+<?php
+
+$config = [
+    'components' => [
+        'request' => [
+            'cookieValidationKey' => 'LXtKj2TAO66F6C0pOf7LB3LIknuLvynv',
+        ],
+         'user' => [
+            'identityClass' => 'common\models\User',
+            'enableAutoLogin' => false,
+            'enableSession' => true,
+            //'loginUrl'=>['site/login'],
+             'authTimeout' => 500,
+      //       'identityCookie' => [
+      //     'name' => 'amaya',
+      //     'path'=>'http://creativegarage.org/hsms/web/'  // correct path for the basictest1 app.
+      // ]
+      //'as afterLogin' => 'common\behaviors\LoginTimestampBehavior',
+
+        ],
+
+'session' => [
+    //'cookieParams' => ['path'=>'http://creativegarage.org/hsms/web/','httponly'=>1], // correct path for the basictest1 app.
+  'class' => 'yii\web\Session',
+   // 'name' => 'hsms_1',
+
+         'timeout' => 500,
+], 
+    ],
+];
+
+if (!YII_ENV_TEST) {
+    // configuration adjustments for 'dev' environment
+    $config['bootstrap'][] = 'debug';
+    $config['modules']['debug'] = [
+        'class' => 'yii\debug\Module',
+    ];
+
+    $config['bootstrap'][] = 'gii';
+    $config['modules']['gii'] = [
+        'class' => 'yii\gii\Module',
+    ];
+}
+
+return $config;
